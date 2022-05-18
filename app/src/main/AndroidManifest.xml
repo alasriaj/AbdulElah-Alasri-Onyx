@@ -9,8 +9,7 @@
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission
-        android:name="android.permission.INTERNET"
-        tools:ignore="ProtectedPermissions" />
+        android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
