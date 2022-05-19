@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-import java.util.Map;
-
 public class REFERENCE_APP {
 
     public static SharedPreferences preferences_slid;
@@ -20,13 +18,17 @@ public class REFERENCE_APP {
         editor_slid = preferences_slid.edit();
     }
 
-    public static void Delete(){
+    public static void Delete() {
         preferences_slid.edit().clear().apply();
     }
 
-    public static void setValue(final String key,final String value) {
+    public static void setValue(final String key, final String value) {
         editor_slid.putString(key, value);
         editor_slid.commit();
+    }
+
+    public static String getValue(final String key) {
+        return preferences_slid.getString(key, null);
     }
 
 }

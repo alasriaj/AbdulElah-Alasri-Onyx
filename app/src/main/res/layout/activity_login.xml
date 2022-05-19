@@ -46,6 +46,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/l_agent_code"
                 android:layout_marginTop="10dp"
+                app:errorEnabled="true"
                 android:textColorHint="@color/colorPrimary"
                 app:boxStrokeColor="@color/colorPrimary">
 

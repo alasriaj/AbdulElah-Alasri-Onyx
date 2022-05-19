@@ -1,10 +1,7 @@
 package com.yemensoft.onyx.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +10,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.yemensoft.onyx.R;
@@ -72,15 +72,15 @@ public class LoginActivity extends AppCompatActivity {
                 l_agent_code.setErrorEnabled(false);
 
                 if (e_agent_code.getText().toString().isEmpty()) {
-                    l_agent_code.setError("عزيزي المستخدم حقل الجوال مطلوب!");
+                    l_agent_code.setError("required");
                     e_agent_code.requestFocus();
                     return;
                 } else if (e_username.getText().toString().isEmpty()) {
-                    l_username.setError("عزيزي المستخدم حقل الجوال 9 أرقام!");
+                    l_username.setError("required");
                     e_username.requestFocus();
                     return;
                 } else if (e_password.getText().toString().isEmpty()) {
-                    l_password.setError("عزيزي المستخدم حقل كلمة المرور مطلوب!");
+                    l_password.setError("required");
                     e_password.requestFocus();
                     return;
                 } else {
@@ -110,23 +110,21 @@ public class LoginActivity extends AppCompatActivity {
                 iend.put("Value",inputs);
                 Call<LoginRes> call = api.login(iend);
                 call.enqueue(new Callback<LoginRes>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onResponse(@NonNull Call<LoginRes> call, @NonNull Response<LoginRes> response) {
                         Tools.sh_load();
                         loginRes = response.body();
-                        Log.d("loginRes", response.body() + "");
+                        assert response.body() != null;
                         if (response.isSuccessful()) {
 
-                            Log.d("loginRes", response.body() + "");
-                            Log.d("loginRes", loginRes + "");
-                            Log.d("loginRes", gson.toJson(loginRes) + "");
-                            Log.d("loginRes", loginRes.result.getErrMsg() + "");
-
-                            if(loginRes.result.getErrNo()==0){
+                            assert loginRes != null;
+                            if (loginRes.Result.ErrNo == 0) {
                                 Log.d("loginRes", gson.toJson(loginRes) + "");
-                                new REFERENCE_APP(LoginActivity.this).setValue("loginRes",gson.toJson(loginRes));
+                                new REFERENCE_APP(LoginActivity.this).setValue("loginRes", gson.toJson(loginRes));
                                 go_main();
-                            }else Tools.dialog(LoginActivity.this, "Message Error", loginRes.result.getErrMsg());
+                            } else
+                                Tools.dialog(LoginActivity.this, "Message", loginRes.Result.ErrMsg);
 
                         }else {
                             Tools.isCheckResponse(response,getBaseContext(), "", "", 0);
@@ -137,7 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Call<LoginRes> call, @NonNull Throwable t) {
                         Tools.sh_load();
-                        Tools.dialog(LoginActivity.this, "Message Error", t.getMessage());
+                        Log.d("err", t.getMessage());
+                        Tools.dialog(LoginActivity.this, "Message", t.getMessage());
                     }
                 });
 
@@ -150,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
     public void go_main() {
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void goMain(View view) {

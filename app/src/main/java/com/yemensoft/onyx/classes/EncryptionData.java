@@ -1,7 +1,9 @@
 package com.yemensoft.onyx.classes;
 
 import android.util.Base64;
+
 import java.security.SignatureException;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 

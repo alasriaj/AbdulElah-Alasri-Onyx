@@ -14,11 +14,8 @@ import retrofit2.http.POST;
 
 public interface JsonPlaceHolderApi {
 
-    String route = "API.php";
-
-//    @Headers("Content-Type: application/json; charset=utf-8")
+    @Headers("Content-Type: application/json; charset=utf-8")
     @POST("CheckLogIn")
     Call<LoginRes> login(@Body Map<String, Object> inputs);
-
 
 }
